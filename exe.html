@@ -64,8 +64,12 @@
 
             // Event handler for the EXECUTE button
             executeButton.addEventListener('click', () => {
-                a = aInput.value; // Assign value to variable 'a'
-                b = bInput.value; // Assign value to variable 'b'
+                // Try to parse a and b as numbers; fallback to strings if parsing fails
+                const parsedA = parseFloat(aInput.value);
+                const parsedB = parseFloat(bInput.value);
+                a = isNaN(parsedA) ? aInput.value : parsedA;
+                b = isNaN(parsedB) ? bInput.value : parsedB;
+
                 const code = exeInput.value.trim(); // Get code from exe textarea
 
                 try {
