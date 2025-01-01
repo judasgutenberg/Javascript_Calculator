@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JavaScript Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 80px;
+            margin-bottom: 10px;
+            font-size: 1rem;
+        }
+        #output {
+            margin-top: 10px;
+            padding: 10px;
+            border: 1px solid #ccc;
+        }
+        .error {
+            color: red;
+        }
+        #log {
+            margin-top: 20px;
+        }
+        .log-entry {
+            cursor: pointer;
+            margin-bottom: 5px;
+            padding: 5px;
+            background-color: #f1f1f1;
+            border: 1px solid #ccc;
+        }
+        .log-entry:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>JavaScript Calculator</h1>
+    <textarea id="a" name="a" placeholder="Enter value for 'a'"></textarea>
+    <textarea id="b" name="b" placeholder="Enter value for 'b'"></textarea>
+    <textarea id="exe" name="exe" placeholder="Enter JavaScript code here"></textarea>
+    <button id="execute">EXECUTE</button>
+    <div id="output"></div>
+    <div id="log">
+        <h2>Command Log</h2>
+        <div id="command-log"></div>
+    </div>
+
+    <script>
+        (function () {
+            const aInput = document.getElementById('a');
+            const bInput = document.getElementById('b');
+            const exeInput = document.getElementById('exe');
+            const executeButton = document.getElementById('execute');
+            const outputDiv = document.getElementById('output');
+            const commandLogDiv = document.getElementById('command-log');
+
+            let a = '';
+            let b = '';
+
+            // Event handler for the EXECUTE button
+            executeButton.addEventListener('click', () => {
+                a = aInput.value; // Assign value to variable 'a'
+                b = bInput.value; // Assign value to variable 'b'
+                const code = exeInput.value.trim(); // Get code from exe textarea
+
+                try {
+                    // Evaluate the JavaScript code with a and b in scope
+                    const result = eval(code);
+                    outputDiv.innerHTML = `<span>${result}</span>`;
+                    outputDiv.className = ''; // Clear error class
+                    addToLog(code); // Add command to log
+                } catch (error) {
+                    outputDiv.innerHTML = `<span class="error">${error.message}</span>`;
+                    outputDiv.className = 'error';
+                }
+            });
+
+            // Add command to the log
+            function addToLog(command) {
+                const logEntry = document.createElement('div');
+                logEntry.textContent = command;
+                logEntry.className = 'log-entry';
+                logEntry.addEventListener('click', () => {
+                    exeInput.value = command; // Load command into exe textarea
+                });
+                commandLogDiv.appendChild(logEntry);
+            }
+        })();
+    </script>
+</body>
+</html>
